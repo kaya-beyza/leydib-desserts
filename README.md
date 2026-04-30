@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 𐔌՞ ܸ.ˬ.ܸ՞𐦯 LeydiB Dessert's
 
 Merhaba! Ben Beyza. LeydiB Dessert's, Angular framework'ü ile tanıştığım ilk profesyonel çalışmam. Antalya'da butik lezzetler sunan bir dükkan için hayal ettiğim bu dijital menüyü, modern teknolojileri uygulayarak hayata geçirdim.
@@ -23,3 +24,7 @@ Eğer projeyi kendi bilgisayarınızda incelemek isterseniz:
 3. `ng serve` komutuyla projeyi kendi tarayıcınızda görüntüleyin.
 
 Teşekkür ederim!
+=======
+# leydib-desserts
+LeydiB Dessert's: Angular 19 framework'ü ile geliştirilmiş, modern ve kullanıcı dostu bir butik tatlı dükkanı menü projesi. Uygulama, dinamik kategori filtreleme ve detaylı ürün inceleme özelliklerini içeren bileşen tabanlı bir mimariye sahiptir. TypeScript tabanlı veri yönetimiyle performans ve düzen bir araya getirilmiştir.
+>>>>>>> ba4fc4d026f1f9d8e0223c0246875c13560cae41
