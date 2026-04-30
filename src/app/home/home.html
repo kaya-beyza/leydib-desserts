@@ -1,0 +1,62 @@
+<div class="menu-container">
+  <div class="menu-header">
+    <span class="chef-icon">𐔌՞ ܸ.ˬ.ܸ՞𐦯</span>
+    <h1>LeydiB Dessert's</h1>
+    <p class="subtitle">ile midenize tatlı bir dokunuş...</p>
+  </div>
+
+  <div class="category-filters">
+    <button (click)="setCategory('Hepsi')" [class.active]="selectedCategory === 'Hepsi'">Hepsi</button>
+    <button (click)="setCategory('Tatlılar')" [class.active]="selectedCategory === 'Tatlılar'">Tatlılar</button>
+    <button (click)="setCategory('İçecekler')" [class.active]="selectedCategory === 'İçecekler'">İçecekler</button>
+  </div>
+
+  <div class="menu-grid">
+    @for (item of menuItems; track item.id) {
+    @if (selectedCategory === 'Hepsi' || item.category === selectedCategory) {
+    <div class="menu-card" (click)="openDetails(item)" style="cursor: pointer;">
+      <img [src]="item.image" [alt]="item.name">
+
+      @if (item.isPopular) {
+      <div class="popular-badge">𐔌՞ ܸ.ˬ.ܸ՞𐦯 Misafirlerin Favorisi!</div>
+      } <div class="menu-info">
+        <div class="category-tag">{{ item.category }}</div>
+        <h2>{{ item.name }}</h2>
+        <p>{{ item.description }}</p>
+        <div class="view-options">✨Seçenekleri ve Fiyatları Gör!✨</div>
+      </div>
+    </div>
+    }
+    }
+  </div>
+
+  <footer class="leydib-footer">
+    <div class="footer-line"></div>
+    <div class="footer-content">
+      <h3>LeydiB Dessert's</h3>
+      <p>🥯Tatlı bir mola için bekliyoruz...🥯</p>
+      <div class="contact-details">
+        <span>📍Antalya, Lara</span>
+        <span>📸@leydibdesserts</span>
+        <span>⏰Her gün: 10:00 - 22:00</span>
+      </div>
+    </div>
+  </footer>
+
+</div> @if (selectedProduct) {
+<div class="modal-overlay" (click)="closeDetails()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="closeDetails()">×</button>
+    <img [src]="selectedProduct.image" class="modal-img" alt="Ürün Görseli">
+    <h3 class="modal-title">{{ selectedProduct.name }} Seçenekleri</h3>
+    <ul class="options-list">
+      @for (opt of selectedProduct.options; track opt.name) {
+      <li>
+        <span class="opt-name">{{ opt.name }}</span>
+        <span class="opt-price">{{ opt.price }} ₺</span>
+      </li>
+      }
+    </ul>
+  </div>
+</div>
+}
