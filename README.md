@@ -45,13 +45,13 @@ amacıyla geliştirilmiştir.
   Mobile-First yaklaşım ile tüm cihazlara uyumlu arayüz.
 
 - **Modern Angular Yapıları**  
-  Standalone Components ve Signals gibi Angular 19 özelliklerinin aktif kullanımı.
+  Standalone Components ve Signals gibi Angular 21 özelliklerinin aktif kullanımı.
 
 ---
 
 ## Kullanılan Teknolojiler
 
-- **Front-End:** Angular 19  
+- **Front-End:** Angular 21  
 - **Styling:** Tailwind CSS  
 - **Programlama Dili:** TypeScript  
 - **State Management:** Angular Signals  
