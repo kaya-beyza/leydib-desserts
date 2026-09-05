@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  Akıcı kullanıcı deneyimi ve masadan sipariş desteği sunan yeni nesil interaktif dijital menü.
+  Anlık sepet, masa seçimi ve dinamik menü yönetimi sunan interaktif sipariş platformu.
 </p>
 
 <p align="center">
