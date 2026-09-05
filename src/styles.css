@@ -1,1 +1,58 @@
-/* You can add global styles to this file, and also import other style files */
+/* LeydiB Dessert's - Global Style System */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Pacifico&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Soft Pastel Tatlı & Kafe Paleti (Dusty Strawberry Rose & Milk Tea) */
+  --primary-color: #d47a8a;       /* Soft Pudra Çilek Rengi */
+  --primary-dark: #6a4a4f;        /* Yumuşak Kakao / Mürdüm Kahve */
+  --primary-light: #f8ecee;       /* Çırpılmış Krema Pembe */
+  --accent-gold: #d4b895;         /* Sütlü Çay / Bisküvi Altını */
+  
+  --bg-color: #faf4f5;            /* Soft İnci Krem Zemin */
+  --card-bg: #ffffff;
+  
+  --text-main: #4a3438;
+  --text-muted: #8c6f74;
+  
+  --border-color: #e8d5d8;
+  --border-subtle: rgba(212, 122, 138, 0.12);
+
+  --font-title: 'Dancing Script', cursive;
+  --font-brand: 'Pacifico', cursive;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+
+  --shadow-card: 0 8px 24px rgba(212, 122, 138, 0.08);
+  --shadow-hover: 0 14px 30px rgba(212, 122, 138, 0.16);
+  --radius-full: 9999px;
+  --radius-md: 20px;
+  --radius-sm: 12px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}

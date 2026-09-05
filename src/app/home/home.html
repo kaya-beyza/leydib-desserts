@@ -1,62 +1,372 @@
+<!-- 0. Menü Yüklenirken Görünmeyen Hayalet / Splash Ekranı (Cadının Evi Stili) -->
+@if (isLoading()) {
+  <div class="splash-loader-overlay" (click)="dismissSplash()">
+    <div class="splash-center-content">
+      <img src="/leydib-logo.png" alt="LeydiB Dessert's Logo" class="splash-main-logo-img">
+      <h1 class="splash-brand-text">LeydiB <span>Dessert's</span></h1>
+      <span class="patisserie-pill">BOUTIQUE PATISSERIE & CAFE</span>
+    </div>
+  </div>
+}
+
 <div class="menu-container">
-  <div class="menu-header">
-    <span class="chef-icon">𐔌՞ ܸ.ˬ.ܸ՞𐦯</span>
-    <h1>LeydiB Dessert's</h1>
-    <p class="subtitle">ile midenize tatlı bir dokunuş...</p>
-  </div>
+  
+  <!-- 1. Üst bar ve marka logomuz -->
+  <div class="qr-top-bar">
+    <div class="qr-badge">
+      <svg class="header-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+        <line x1="12" y1="18" x2="12.01" y2="18"></line>
+      </svg>
+      <span class="qr-text">QR Dijital Menü</span>
+    </div>
 
-  <div class="category-filters">
-    <button (click)="setCategory('Hepsi')" [class.active]="selectedCategory === 'Hepsi'">Hepsi</button>
-    <button (click)="setCategory('Tatlılar')" [class.active]="selectedCategory === 'Tatlılar'">Tatlılar</button>
-    <button (click)="setCategory('İçecekler')" [class.active]="selectedCategory === 'İçecekler'">İçecekler</button>
-  </div>
-
-  <div class="menu-grid">
-    @for (item of menuItems; track item.id) {
-    @if (selectedCategory === 'Hepsi' || item.category === selectedCategory) {
-    <div class="menu-card" (click)="openDetails(item)" style="cursor: pointer;">
-      <img [src]="item.image" [alt]="item.name">
-
-      @if (item.isPopular) {
-      <div class="popular-badge">𐔌՞ ܸ.ˬ.ܸ՞𐦯 Misafirlerin Favorisi!</div>
-      } <div class="menu-info">
-        <div class="category-tag">{{ item.category }}</div>
-        <h2>{{ item.name }}</h2>
-        <p>{{ item.description }}</p>
-        <div class="view-options">✨Seçenekleri ve Fiyatları Gör!✨</div>
+    <div class="brand-center">
+      <div class="brand-logo-group">
+        <h1 class="brand-title">LeydiB <span>Dessert's</span></h1>
+        <span class="patisserie-pill">BOUTIQUE PATISSERIE & CAFE</span>
       </div>
     </div>
-    }
+
+    <div class="top-bar-right">
+      <div class="table-select-box">
+        <svg class="header-icon location-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+        <select [value]="selectedTable()" (change)="setTable($event)">
+          @for (t of tables; track t) {
+            <option [value]="t">{{ t }}</option>
+          }
+        </select>
+      </div>
+
+      <button class="cart-trigger-btn" (click)="toggleCart()">
+        <svg class="cart-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+        <span class="cart-text">Sepetim</span>
+        @if (totalCartCount() > 0) {
+          <span class="cart-count-badge">{{ totalCartCount() }}</span>
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- 2. Menü içi arama bölümüm -->
+  <header class="menu-header">
+    <div class="search-box">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input 
+        type="text" 
+        [value]="searchQuery()" 
+        (input)="onSearch($event)" 
+        placeholder="Menüde tatlı veya içecek ara..."
+      />
+      @if (searchQuery()) {
+        <button class="clear-search" (click)="searchQuery.set('')">✕</button>
+      }
+    </div>
+  </header>
+
+  <!-- 3. Kategori filtre butonlarım -->
+  <div class="category-filters">
+    <button (click)="setCategory('Hepsi')" [class.active]="selectedCategory() === 'Hepsi'">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-svg-icon">
+        <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+        <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+        <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+        <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+      </svg>
+      <span>Tüm Menü</span>
+      <span class="cat-count-badge">{{ categoryCounts().all }}</span>
+    </button>
+
+    <button (click)="setCategory('Tatlılar')" [class.active]="selectedCategory() === 'Tatlılar'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-svg-icon">
+        <path d="M21.5 12c0 4.5-4 8.5-9.5 8.5S2.5 16.5 2.5 12c0-3.5 2.5-6.5 6-7.5.5 2.5 2 5 3.5 5s3-2.5 3.5-5c3.5 1 6 4 6 7.5z"></path>
+        <path d="M7 9.5c1.5 1.5 2 3.5 2 5.5"></path>
+        <path d="M17 9.5c-1.5 1.5-2 3.5-2 5.5"></path>
+      </svg>
+      <span>Tatlılar</span>
+      <span class="cat-count-badge">{{ categoryCounts().tatlilar }}</span>
+    </button>
+
+    <button (click)="setCategory('İçecekler')" [class.active]="selectedCategory() === 'İçecekler'">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-svg-icon">
+        <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+        <line x1="6" y1="1" x2="6" y2="4"></line>
+        <line x1="10" y1="1" x2="10" y2="4"></line>
+        <line x1="14" y1="1" x2="14" y2="4"></line>
+      </svg>
+      <span>İçecekler</span>
+      <span class="cat-count-badge">{{ categoryCounts().icecekler }}</span>
+    </button>
+  </div>
+
+  <!-- 4. Tatlı ve içecek ürün kartlarım -->
+  <div class="menu-grid">
+    @for (item of filteredMenuItems(); track item.id) {
+      <div class="menu-card" (click)="openDetails(item)">
+        <div class="card-img-wrapper">
+          <img [src]="item.image" [alt]="item.name" loading="lazy">
+          <div class="img-vignette-overlay"></div>
+          @if (item.isPopular) {
+            <div class="popular-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              Özel Favori
+            </div>
+          }
+        </div>
+
+        <div class="menu-info">
+          <div class="category-tag">{{ item.category }}</div>
+          <h2>{{ item.name }}</h2>
+          <p>{{ item.description }}</p>
+
+          <div class="card-footer-action">
+            <div class="card-price-info">
+              <span class="price-start-label">başlayan</span>
+              <span class="card-price-value">{{ getMinPrice(item) }} ₺</span>
+            </div>
+
+            <button class="card-action-btn">
+              <span>Seçenekler</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    } @empty {
+      <div class="empty-search">
+        <p>🔍 "<strong>{{ searchQuery() }}</strong>" aramasıyla eşleşen bir ürün bulunamadı.</p>
+        <button (click)="searchQuery.set('')">Aramayı Temizle</button>
+      </div>
     }
   </div>
 
+  <!-- 5. Alt bilgi ve marka sloganım -->
   <footer class="leydib-footer">
-    <div class="footer-line"></div>
     <div class="footer-content">
-      <h3>LeydiB Dessert's</h3>
-      <p>🥯Tatlı bir mola için bekliyoruz...🥯</p>
-      <div class="contact-details">
-        <span>📍Antalya, Lara</span>
-        <span>📸@leydibdesserts</span>
-        <span>⏰Her gün: 10:00 - 22:00</span>
+      
+      <div class="footer-brand-group">
+        <h2 class="footer-brand-title">LeydiB <span>Dessert's</span></h2>
+        <span class="patisserie-pill">BOUTIQUE PATISSERIE & CAFE</span>
       </div>
+
+      <div class="chef-divider">
+        <span class="divider-line"></span>
+        <div class="chef-icon-wrapper">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="chef-icon">
+            <path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 9.18 0A4 4 0 0 1 18 13.87V19H6z"></path>
+            <line x1="6" y1="19" x2="18" y2="19"></line>
+          </svg>
+        </div>
+        <span class="divider-line"></span>
+      </div>
+
+      <p class="footer-tagline">midenize tatlı bir dokunuş</p>
+
+      <div class="contact-details">
+        <div class="contact-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span>Her gün: 10:00 - 22:00</span>
+        </div>
+
+        <div class="contact-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <span>Antalya</span>
+        </div>
+
+        <div class="contact-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+          <span>&#64;leydibdesserts</span>
+        </div>
+      </div>
+
+      <div class="footer-bottom-line">
+        <p>© 2026 LeydiB Dessert's • Masadan Dijital QR Menü Uygulaması</p>
+      </div>
+
     </div>
   </footer>
 
-</div> @if (selectedProduct) {
-<div class="modal-overlay" (click)="closeDetails()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <button class="close-btn" (click)="closeDetails()">×</button>
-    <img [src]="selectedProduct.image" class="modal-img" alt="Ürün Görseli">
-    <h3 class="modal-title">{{ selectedProduct.name }} Seçenekleri</h3>
-    <ul class="options-list">
-      @for (opt of selectedProduct.options; track opt.name) {
-      <li>
-        <span class="opt-name">{{ opt.name }}</span>
-        <span class="opt-price">{{ opt.price }} ₺</span>
-      </li>
-      }
-    </ul>
-  </div>
 </div>
+
+<!-- 6. Ürün detay ve çeşit seçim modalım -->
+@if (selectedProduct(); as product) {
+  <div class="modal-overlay" (click)="closeDetails()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeDetails()">✕</button>
+      
+      <div class="modal-img-wrapper">
+        <img [src]="product.image" class="modal-img" [alt]="product.name">
+        <div class="modal-img-overlay"></div>
+        <span class="modal-category-badge">{{ product.category }}</span>
+      </div>
+
+      <div class="modal-body-content">
+        <h3 class="modal-title">{{ product.name }}</h3>
+        <p class="modal-desc">{{ product.description }}</p>
+        
+        <div class="section-label-group">
+          <span class="section-label">Çeşit / Seçenek Seçiniz</span>
+          <span class="section-subtext">Lütfen damak tadınıza uygun çeşidi seçin</span>
+        </div>
+
+        <div class="options-selectable-list">
+          @for (opt of product.options; track opt.name) {
+            <div 
+              class="option-row" 
+              [class.selected]="selectedOption()?.name === opt.name"
+              (click)="selectOption(opt)"
+            >
+              <div class="opt-radio">
+                <span class="radio-circle"></span>
+                <span class="opt-name">{{ opt.name }}</span>
+              </div>
+              <span class="opt-price">{{ opt.price }} ₺</span>
+            </div>
+          }
+        </div>
+
+        <div class="modal-action-footer">
+          <div class="qty-box">
+            <button (click)="decrementModalQty()" [disabled]="modalQuantity() <= 1">-</button>
+            <span>{{ modalQuantity() }}</span>
+            <button (click)="incrementModalQty()">+</button>
+          </div>
+
+          <button class="add-to-cart-btn" (click)="addToCart()" [disabled]="!selectedOption()">
+            <span>Sepete Ekle • {{ (selectedOption()?.price || 0) * modalQuantity() }} ₺</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+}
+
+<!-- 7. Masadan sipariş sepet çekmecem -->
+@if (isCartOpen()) {
+  <div class="cart-drawer-overlay" (click)="toggleCart()">
+    <div class="cart-drawer" (click)="$event.stopPropagation()">
+      
+      <div class="drawer-header">
+        <div class="drawer-title-group">
+          <h3>
+            <svg class="drawer-header-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            <span>Masadan Sipariş Sepetim</span>
+          </h3>
+        </div>
+        <button class="drawer-close" (click)="toggleCart()">✕</button>
+      </div>
+
+      <div class="drawer-body">
+        <div class="table-info-banner">
+          <div class="banner-left">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span>Sipariş Masası:</span>
+          </div>
+          <strong class="table-badge">{{ selectedTable() }}</strong>
+        </div>
+
+        @if (cartItems().length === 0) {
+          <div class="empty-cart">
+            <div class="empty-cart-icon-wrapper">
+              <svg class="empty-cart-svg-icon" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+            </div>
+            <p class="empty-cart-title">Sepetiniz Henüz Boş</p>
+            <p class="empty-cart-sub">Menümüzdeki tatlı ve içeceklerden dilediğinizi seçip masanıza sipariş verebilirsiniz.</p>
+          </div>
+        } @else {
+          <div class="cart-items-list">
+            @for (item of cartItems(); track item.product.id + item.selectedOption.name) {
+              <div class="cart-item-row">
+                <img [src]="item.product.image" class="cart-item-img" [alt]="item.product.name" />
+                
+                <div class="cart-item-info">
+                  <h4>{{ item.product.name }}</h4>
+                  <span class="opt-label">{{ item.selectedOption.name }}</span>
+                  <span class="price-label">{{ item.selectedOption.price * item.quantity }} ₺</span>
+                </div>
+
+                <div class="cart-item-qty">
+                  <button (click)="updateCartQty(item, -1)">-</button>
+                  <span>{{ item.quantity }}</span>
+                  <button (click)="updateCartQty(item, 1)">+</button>
+                </div>
+
+                <button class="remove-item-btn" (click)="removeFromCart(item)" title="Ürünü Çıkar">✕</button>
+              </div>
+            }
+          </div>
+
+          <div class="customer-note-box">
+            <label for="orderNote">
+              <svg class="note-label-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+              <span>Sipariş Notu / Alerjen İstekleri:</span>
+            </label>
+            <textarea 
+              id="orderNote" 
+              rows="2" 
+              placeholder="Örn: Bol çikolatalı sos olsun, alerjen bilgisi..."
+              [value]="customerNote()"
+              (input)="onNoteInput($event)"
+            ></textarea>
+          </div>
+        }
+      </div>
+
+      @if (cartItems().length > 0) {
+        <div class="drawer-footer">
+          <div class="total-row">
+            <span>Toplam Sipariş Tutarı:</span>
+            <span class="total-price">{{ totalCartPrice() }} ₺</span>
+          </div>
+
+          <button class="submit-order-btn" (click)="sendTableOrder()">
+            <span>Siparişi Masaya İlet ({{ selectedTable() }})</span>
+          </button>
+        </div>
+      }
+
+    </div>
+  </div>
 }
