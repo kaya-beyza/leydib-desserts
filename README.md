@@ -42,7 +42,7 @@ Projenin ilk versiyonuna kıyasla gerçekleştirdiğim başlıca yenilikler:
 
 - **Reaktif State Yönetimi (Angular Signals):** Veri akışını `signal` ve `computed` yapılarıyla kurarak anlık fiyat, sepet ve filtreleme güncellemelerini yüksek performansla yönettim.
 - **İnteraktif Sepet Çekmecesi:** Kullanıcıların seçtiği ürünleri detaylarıyla inceleyebildiği, adet güncelleyebildiği veya çıkarabildiği akıcı bir sepet paneli entegre ettim.
-- **Detaylı Ürün & Lezzet Seçenekleri:** Magnolia, cheesecake veya tart gibi lezzetlerin farklı çeşitlerini (Lotuslu, Çilekli, Limonlu vb.) fiyatlandırmalarıyla birlikte sunan modal yapısını hayata geçirdim.
+- **Detaylı Ürün & Lezzet Seçenekleri:** Magnolia, Cheesecake veya Tart gibi lezzetlerin farklı çeşitlerini (Lotuslu, Çilekli, Limonlu vb.) fiyatlandırmalarıyla birlikte sunan modal yapısını hayata geçirdim.
 - **Masadan Sipariş & Not Sistemi:** Müşterilerin bulundukları masayı (Masa 1-5, Bahçe, Gel-Al) seçebilmelerine ve siparişlerine özel istek notu ekleyebilmelerine imkan tanıdım.
 - **Canlı Arama & Akıllı Filtreleme:** Menü içerisinde anında arama yapabilen ve kategorilerdeki ürün adedini anlık yansıtan dinamik sayaçlar ekledim.
 - **Yenilenen Görsel Kimlik & Arayüz:** Butik pastane ruhuna uygun özel amblem, tipografi, açılış karşılama ekranı ve tamamen responsive bir tasarım dili geliştirdim.
@@ -63,10 +63,10 @@ Projenin ilk versiyonuna kıyasla gerçekleştirdiğim başlıca yenilikler:
 
 ```text
 leydib-desserts/
-├── public/                  # Logo, favicon ve görsel varlıklar
+├── public/                  # Logo, FavIcon ve Görsel Varlıklar
 ├── src/
 │   ├── app/
-│   │   ├── models/          # TypeScript veri modelleri ve arayüzler
+│   │   ├── models/          # TypeScript Veri Modelleri ve Arayüzler
 │   │   │   └── menu.model.ts
 │   │   ├── home/            # Ana menü ve sipariş bileşeni (HTML, CSS, TS)
 │   │   ├── recipe-data.ts   # Menü içeriği ve fiyatlandırma veri havuzu
@@ -110,7 +110,7 @@ Tarayıcınızda `http://localhost:4200` adresini açarak uygulamayı görüntü
 - [x] Ürün varyasyonları ve lezzet seçenekleri
 - [ ] Çoklu dil desteği (Türkçe / İngilizce)
 - [ ] Müşteri puanlama ve geri bildirim sistemi
-- [ ] Backend & veritabanı entegrasyonu
+- [ ] Back-End & Veri Tabanı entegrasyonu
 
 ---
 
