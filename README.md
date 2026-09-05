@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  Antalya'nın butik tatlı kültürünü modern web teknolojileriyle buluşturan interaktif dijital menü ve masadan sipariş platformu.
+  Akıcı kullanıcı deneyimi ve masadan sipariş desteği sunan yeni nesil interaktif dijital menü.
 </p>
 
 <p align="center">
