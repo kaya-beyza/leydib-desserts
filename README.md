@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  Anlık sepet, masa seçimi ve dinamik menü yönetimi sunan interaktif sipariş platformu.
+  Anlık Sepet, Masa Seçimi ve Dinamik Menü Yönetimi sunan interaktif sipariş platformu.
 </p>
 
 <p align="center">
